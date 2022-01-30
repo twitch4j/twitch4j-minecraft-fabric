@@ -18,6 +18,11 @@ repositories {
 	// for more information about repositories.
 }
 
+// for includeTransitive
+configurations {
+	includeTransitive
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -26,7 +31,16 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// twitch4j
+	implementation 'com.github.twitch4j:twitch4j:1.8.0'
+	includeTransitive 'com.github.twitch4j:twitch4j:1.8.0'
 }
+
+// for includeTransitive
+configurations.getByName("includeTransitive").resolvedConfiguration.resolvedArtifacts.forEach(dep -> {
+	dependencies.add("include", dep.id.componentIdentifier.displayName)
+})
 
 processResources {
 	inputs.property "version", project.version
